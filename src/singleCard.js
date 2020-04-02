@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
 
 } from 'react-native';
+import PropTypes from "prop-types";
 const LIVE_ICON = require('./assets/liveIcon.png')
 const SAN_ICON = require('./assets/san.png')
 
@@ -189,6 +190,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: '#13D9C9',
         textAlign: 'right',
+        paddingTop:8,
         paddingRight: 8,
     },
 

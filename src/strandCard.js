@@ -14,7 +14,7 @@ class StrandCard extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            CardDetailShow: true
+            CardDetailShow: false
         }
     }
     render() {
@@ -31,7 +31,15 @@ class StrandCard extends Component {
                 
             </>
         )
-
+        const _renderOderDetail = this.state.CardDetailShow? (
+            <View style={styles.detailCom}>
+                  <Text style={styles.StrandDetail}>(足球)全场-1X2</Text>
+                  <Text style={styles.StrandDetail}>[印度足球甲级联赛]</Text>
+                  <Text style={styles.StrandDetail}>皇家克什米尔1:0你洛卡</Text>
+                  <Text style={styles.StrandDetail}>03/04 16:30</Text>
+            </View>
+        ):null
+        
         const _oderNumber = this.state.CardDetailShow ? _renderOder : null
         return (
             <View style={styles.CardContainer}>
@@ -42,22 +50,33 @@ class StrandCard extends Component {
                         <Text style={{ fontSize: 15, color: '#13D9C9', marginLeft: 8 }}>(2串1)</Text>
                     </View>
 
-                    <View style={[styles.pdtop]}>
+                    {/* <View style={[styles.pdtop]}>
                         <Text style={[styles.leftText]}>玩法:</Text>
                         <Text style={styles.rightText}>(足球)全场-让分</Text>
                         <Image style={styles.liveIcon} source={LIVE_ICON}></Image>
-                    </View>
+                    </View> */}
                     {/* //! 投注额 串关中 包含折叠 */}
                     <View style={[styles.pdtop, { paddingTop: 6, paddingRight: 8 }]}>
                         <Text style={[styles.leftText]}>投注项:</Text>
-                        <Text style={styles.rightText}>ARSENAL 0(0.5)@1.79</Text>
+                        <View style={{flex:1}}>
+                            <Text style={styles.rightText}>你卡洛@5.3</Text>
+                            {/* //!detailContext */}
+                            {_renderOderDetail }
+                            <Text style={styles.rightText}>ARSENAL 0(0.5)@1.79</Text>
+                            {/* //!detailContext */}
+                            {_renderOderDetail }
+
+                            <Text style={styles.rightText}>大3.5/4@1.79</Text>
+                            {/* //!detailContext */}
+                            {_renderOderDetail }
+
+                        </View>
                         <View style={styles.pkIcon}>
                             <Text style={{ fontSize: 12, color: '#fff' }}>欧洲盘</Text>
                         </View>
                     </View>
-                    <Text style={styles.StrandDetail}>(足球)全场-1X2</Text>
-                    <Text style={styles.StrandDetail}>[印度足球甲级联赛]</Text>
 
+                    
 
                     {/* //* 订单号和 投注时间 折叠 */}
                     {_oderNumber}
@@ -69,11 +88,21 @@ class StrandCard extends Component {
 
                     <Text style={styles.Profitable}>可盈利 +300</Text>
                 </View>
-                <View style={styles.buttonBottom}>
-                    <Image style={styles.sanIcon} source={SAN_ICON}></Image>
-                </View>
+                {/* //*底部按钮 */}
+                <TouchableOpacity onPress={() => { this._handleCardBottom() }}>
+                    <View style={styles.buttonBottom}>
+                        <Image style={styles.sanIcon} source={SAN_ICON}></Image>
+                    </View>
+                </TouchableOpacity>
             </View>
         )
+    }
+    
+    //*  点击card 底部的折叠按钮
+    _handleCardBottom() {
+        this.setState({
+            CardDetailShow: !this.state.CardDetailShow
+        })
     }
 }
 
@@ -81,17 +110,22 @@ export default StrandCard;
 const styles = StyleSheet.create({
     CardContainer: {
         marginTop: 1,
-        minHeight: 170,
         flexDirection: 'column'
     },
     cardCom: {
         flex: 1,
-        backgroundColor: '#45484E'
+        backgroundColor: '#45484E',
+        paddingBottom:12
     },
     StrandDetail:{
-        marginLeft:78,
+        marginLeft:8,
+        marginTop:4,
         flex:1,
         color:"#AAA"
+    },
+    detailCom:{
+        marginTop:6,
+        marginBottom:12
     },
     buttonBottom: {
         backgroundColor: '#2F3032',
@@ -141,6 +175,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: '#13D9C9',
         textAlign: 'right',
+        paddingTop:8,
         paddingRight: 8,
     }
 });
