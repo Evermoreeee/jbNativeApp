@@ -141,9 +141,10 @@ const ScrollableTabBar = createReactClass({
       onLayout={onLayoutHandler}
     >
       <View style={[styles.tab, this.props.tabStyle, ]}>
-        <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
-          {_tab.title}
+        <Text style={[ textStyle, {color: textColor,fontSize: 10,}]}>
+          {_tab.weekday}
         </Text>
+        <Text style={[ textStyle, {color: textColor,fontSize: 10,}]}>{_tab.time}</Text>
       </View>
     </Button>;
   },
@@ -226,21 +227,20 @@ const styles = StyleSheet.create({
     height: 38,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingLeft: 3,
+    paddingRight: 3,
     backgroundColor: '#2f343a',
   },
   container: {
     height: 38,
-    borderWidth: 1,
+    borderWidth: 0,
     borderTopWidth: 0,
     borderLeftWidth: 0,
-    borderRightWidth: 0,
-    backgroundColor: '#2f343a',
-    borderColor: '#0E0F15',
+    borderRightWidth: 0,  
   },
   tabs: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+    backgroundColor: '#2f343a',
   },
 });

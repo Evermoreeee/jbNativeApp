@@ -22,10 +22,10 @@ class TabsNav extends Component{
         super(props)
         this.state = {
             TABS_DATA : [
-                { title: '确认中', avtive: 1 ,em:0},
-                { title: '未结算', avtive: 2 ,em:0},
-                { title: '已结算', avtive: 3 ,em:0},
-                { title: '已划单', avtive: 4 ,em:0},
+                { title: '确认中', active: 0 ,em:0},
+                { title: '未结算', active: 1 ,em:0},
+                { title: '已结算', active: 2 ,em:0},
+                { title: '已划单', active: -1 ,em:0},
             ]
         }
     }
@@ -55,16 +55,16 @@ class TabsNav extends Component{
     
     render(){
         let _tabViewContext = this.state.TABS_DATA.map((tab,i)=>{
-            if(i != 2){
+            if(tab.active == 0 || tab.active == 1){
                 return (
                     <View key={i} style={styles.textStyle} tabLabel={JSON.stringify(tab)}>
-                        <OderListComponent statusProps = {i}></OderListComponent>
+                        <OderListComponent statusProps = {tab.active} ></OderListComponent>
                     </View>
                 )
             }else{
                 return (
                     <View key={i} style={styles.textStyle} tabLabel={JSON.stringify(tab)}>
-                        <EarlyMatch></EarlyMatch>
+                        <EarlyMatch statusProps = {tab.active} />
                     </View>
                 )
             }
@@ -86,18 +86,17 @@ class TabsNav extends Component{
 }
 
 
-
 export default TabsNav;
 const styles = StyleSheet.create({
     container: {
         backgroundColor:'#242428',
     },
     lineStyle: {
-        width:39,
+        width:28,
         height:3,
         borderRadius:15,
         backgroundColor:'#13D9C9',
-        marginLeft:30
+        marginLeft:36
     },
     textStyle:{
         flex:1,
