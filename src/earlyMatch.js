@@ -10,8 +10,8 @@ import {
     LayoutAnimation
 } from 'react-native';
 // import { Tabs } from '@ant-design/react-native';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
-import ScrollableTabBar from './components/ScrollableTabBar'
+import ScrollableTabView,{ScrollableTabBar} from 'react-native-scrollable-tab-view';
+// import  from './components/ScrollableTabBar'
 // import MatchTabsView from './MatchTabsView'
 import OderListComponent from './oderListCom'
 

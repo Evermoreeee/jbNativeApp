@@ -5,6 +5,7 @@ import {
     StyleSheet,
     Image,
     TouchableOpacity,
+    ImageBackground,
     LayoutAnimation
 } from 'react-native';
 import PropTypes from "prop-types";
@@ -15,8 +16,12 @@ const LIVE_ICON = require('./assets/liveIcon.png')
 const OPRN_ICON = require('./assets/open.png')
 const CLOSE_ICON = require('./assets/close.png')
 const VS_ICON = require('./assets/ic_vs.png')
+const BG_JB = require('./assets/shuiyin_a.png')
+const YING_ICON = require('./assets/ic_ying.png')
+const SHU_ICON = require('./assets/ic_shu.png')
+const TIE_ICON = require('./assets/img_zoudi.png')
 
-class SingleCard extends Component {
+class SingleCard extends React.PureComponent {
     constructor(props) {
         super(props)
         this.state = {
@@ -34,9 +39,47 @@ class SingleCard extends Component {
             CardDetailShow: !this.state.CardDetailShow
         })
     }
-    
-    render() {
+    betWinIconRender(ItemData){
+        //* 输赢或者走低icon
+        let WinBet_ICON = ItemData.winBet == "Win" ? YING_ICON:SHU_ICON
+        if(ItemData.winBet == "Tie"){
+            WinBet_ICON = TIE_ICON
+        }
+        if(this.props.statusProps == 2){
+            return (
+                <ImageBackground style={styles.betReturn} source={WinBet_ICON}></ImageBackground>
+            )
+        }else{
+            return null
+        }
+        
+    }
 
+    _renderCardContext(){
+        const ItemData = this.props.itemData
+        //* 下注项详情
+        const DetailData = ItemData.details[0]
+        //展开单card render
+        if(this.state.CardDetailShow){
+            return ( <View style={styles.FoldCard}>
+                <View style={styles.FoldlistCom}>
+                    <Text style={styles.FoldLeft}>比赛时间:</Text>
+                    <Text style={styles.FoldRight}>{getTimeFliters(DetailData.matchDate)}</Text>
+                </View>
+                <View style={styles.FoldlistCom}>
+                    <Text style={styles.FoldLeft}>订单号:</Text>
+                    <Text style={styles.FoldRight}>{ItemData.orderId}</Text>
+                </View>
+                <View style={styles.FoldlistCom}>
+                    <Text style={styles.FoldLeft}>投注时间:</Text>
+                    <Text style={styles.FoldRight}>{ItemData.createTime}</Text>
+                </View>
+            </View>)
+        }else{
+            return null
+        }
+    }
+    render() {
         const ItemData = this.props.itemData
         //* 下注项详情
         const DetailData = ItemData.details[0]
@@ -68,29 +111,16 @@ class SingleCard extends Component {
 
         //* 走地盘 oddsKind
         const _renderLive = DetailData.oddsKind == 'LiveScout'?(<Image style={styles.liveIcon} source={LIVE_ICON}></Image>):null
-        //展开单card render
-        const _renderItem = (<View style={styles.FoldCard}>
-            <View style={styles.FoldlistCom}>
-                <Text style={styles.FoldLeft}>比赛时间:</Text>
-                <Text style={styles.FoldRight}>{getTimeFliters(DetailData.matchDate)}</Text>
-            </View>
-            <View style={styles.FoldlistCom}>
-                <Text style={styles.FoldLeft}>订单号:</Text>
-                <Text style={styles.FoldRight}>{ItemData.orderId}</Text>
-            </View>
-            <View style={styles.FoldlistCom}>
-                <Text style={styles.FoldLeft}>投注时间:</Text>
-                <Text style={styles.FoldRight}>{ItemData.createTime}</Text>
-            </View>
-        </View>)
-
+        
         //* card open or close
         const BottomIcon = !this.state.CardDetailShow ? CLOSE_ICON : OPRN_ICON
-        const _renderCardContext = this.state.CardDetailShow ? _renderItem : null
-
+        
         return (
-
             <View style={styles.CardContainer}>
+                <ImageBackground style={styles.shiuyinBg} source={BG_JB}></ImageBackground>
+                {/* //*输赢 */}
+                {this.betWinIconRender(ItemData)}
+                
                 <View style={styles.cardCom}>
                     {/* //*title */}
                     <View style={[styles.pdtop, { paddingHorizontal: 30, paddingTop: 12 }]}>
@@ -135,7 +165,7 @@ class SingleCard extends Component {
                 </View>
 
                 {/* //!折叠栏 */}
-                {_renderCardContext}
+                { this._renderCardContext()}
 
                 <TouchableOpacity onPress={() => { this._handleCardBottom() }}>
                     <View style={styles.buttonBottom}>
@@ -154,9 +184,25 @@ const styles = StyleSheet.create({
     CardContainer: {
         marginTop: 1,
         // minHeight: 201,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        
     },
-
+    shiuyinBg:{
+        position:'absolute',
+        bottom:2,
+        right:20,
+        width:60,
+        height:80,
+        zIndex:10,
+    },
+    betReturn:{
+        width:68,
+        height:68,
+        position:'absolute',
+        zIndex:10,
+        top:74,
+        right:68,
+    },
     FoldCard: {
         marginHorizontal: 8,
         minHeight: 50,

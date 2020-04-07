@@ -5,16 +5,20 @@ import {
     StyleSheet,
     Image,
     TouchableOpacity,
+    ImageBackground,
     LayoutAnimation
 } from 'react-native';
 import { AnimationConfig ,toFixt2 ,getTimeFliters,sportTypeFliters} from './utils/utils'
 
-const LIVE_ICON = require('./assets/liveIcon.png')
 
 const OPRN_ICON = require('./assets/open.png')
 const CLOSE_ICON = require('./assets/close.png')
+const BG_JB = require('./assets/shuiyin_a.png')
+const YING_ICON = require('./assets/ic_ying.png')
+const SHU_ICON = require('./assets/ic_shu.png')
+const TIE_ICON = require('./assets/img_zoudi.png')
 
-class StrandCard extends Component {
+class StrandCard extends React.PureComponent {
     constructor(props) {
         super(props)
         this.state = {
@@ -31,6 +35,22 @@ class StrandCard extends Component {
                   <Text style={styles.StrandDetail}>{getTimeFliters(item.matchDate)}</Text>
             </View>
         )
+    }
+
+    betWinIconRender(ItemData){
+        //* 输赢或者走低icon
+        let WinBet_ICON = ItemData.winBet == "Win" ? YING_ICON:SHU_ICON
+        if(ItemData.winBet == "Tie"){
+            WinBet_ICON = TIE_ICON
+        }
+        if(this.props.statusProps == 2){
+            return (
+                <ImageBackground style={styles.betReturn} source={WinBet_ICON}></ImageBackground>
+            )
+        }else{
+            return null
+        }
+        
     }
     render() {
         //* details
@@ -55,7 +75,7 @@ class StrandCard extends Component {
         }
         const _renderOder = (
             <>  
-            <View style={[styles.pdtop, { paddingTop: 6 }]}>
+                <View style={[styles.pdtop, { paddingTop: 6 }]}>
                     <Text style={[styles.leftText]}>订单号:</Text>
                     <Text style={styles.rightText}>{ItemData.orderId}</Text>
                 </View>
@@ -67,19 +87,27 @@ class StrandCard extends Component {
         )
         const _renderOderDetail = ItemDataGetail.map((item,index) => {
             return(
-                <>
-                    <Text key={index} style={[styles.rightText]}>{`${item.outcomeName}${item.specialBetName}@${item.showOdds}`}</Text>
-                    {this.state.CardDetailShow?this._renderBetDetail(item):null}
-                </>
+                <View key={index}>
+                    <Text  style={[styles.rightText]}>{`${item.outcomeName}${item.specialBetName}@${item.showOdds}`}</Text>
+                    {this.state.CardDetailShow?this._renderBetDetail(item,index):null}
+                </View>
             )
         })
 
         //* card open or close
         const _oderNumber = this.state.CardDetailShow ? _renderOder : null
-        const BottomIcon = !this.state.CardDetailShow?CLOSE_ICON:OPRN_ICON
-
+        const BottomIcon = !this.state.CardDetailShow ? CLOSE_ICON:OPRN_ICON
+        //* 输赢或者走低icon
+        let WinBet_ICON = ItemData.winBet == "Win" ? YING_ICON:SHU_ICON
+        if(ItemData.winBet == "Tie"){
+            WinBet_ICON = TIE_ICON
+        }
         return (
             <View style={styles.CardContainer}>
+                <ImageBackground style={styles.shiuyinBg} source={BG_JB}></ImageBackground>
+                
+                {this.betWinIconRender(ItemData)}
+
                 <View style={styles.cardCom}>
                     {/* title */}
                     <View style={styles.pdtop}>
@@ -135,6 +163,22 @@ const styles = StyleSheet.create({
     CardContainer: {
         marginTop: 1,
         flexDirection: 'column'
+    },
+    shiuyinBg:{
+        position:'absolute',
+        bottom:2,
+        right:20,
+        width:60,
+        height:80,
+        zIndex:10,
+    },
+    betReturn:{
+        width:68,
+        height:68,
+        position:'absolute',
+        zIndex:10,
+        top:74,
+        right:68,
     },
     cardCom: {
         flex: 1,

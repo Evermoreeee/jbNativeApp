@@ -5483,6 +5483,11 @@ react-is@^16.12.0, react-is@^16.8.1, react-is@^16.8.4, react-is@^16.9.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-native-gp-style@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-gp-style/-/react-native-gp-style-1.0.1.tgz#128c833aa9cdb70782ae89536c1e01cec9bd5e2d"
+  integrity sha512-miHh72ztR9R6Yn7CqQlvwEkYj+P6XfLALM2BvkyxSRBK/vnqyX/KvGLzcr5ZRm9dk0ffIn4LIwlsiDzBLhr90g==
+
 react-native-linear-gradient@^2.5.6:
   version "2.5.6"
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.5.6.tgz#96215cbc5ec7a01247a20890888aa75b834d44a0"
@@ -5492,6 +5497,13 @@ react-native-md5@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-md5/-/react-native-md5-1.0.0.tgz#2320be24d674938ae5ef4f492698edbbfa0e0205"
   integrity sha1-IyC+JNZ0k4rl709JJpjtu/oOAgU=
+
+react-native-page-listview@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-page-listview/-/react-native-page-listview-1.2.0.tgz#b721f2ad19c016faa3d22887ae1bd2d6cf1f684b"
+  integrity sha512-0EvWfBbKAt0fqSGOPH6hj3LyfEB2NbsujZ0LKV39y/Oq2qU8f7Pg1BTY4xQZpOh4CdPEqfscmgIZMoBrw73nTQ==
+  dependencies:
+    react-native-gp-style "^1.0.1"
 
 react-native-pull-to-refresh-custom@^1.0.3:
   version "1.0.3"

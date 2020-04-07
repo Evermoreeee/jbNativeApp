@@ -30,9 +30,12 @@ export const sportTypeFliters = type =>{
     switch(type){
         case 'Soccer': _sportName = '足球';break;
         case 'Basketball': _sportName = '篮球';break;
-        case 'ESports': _sportName = '电竞';break;
+        case 'Dota2': _sportName = '刀塔';break;
         case 'Tennis': _sportName = '网球';break;
         case 'Snooker': _sportName = '斯诺克';break;
+        case 'CounterStrike': _sportName = '反恐精英';break;
+        case 'LOL': _sportName = '英雄联盟';break;
+
     }
     return _sportName;
 }
