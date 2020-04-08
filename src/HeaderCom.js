@@ -24,12 +24,11 @@ class HeaderContext extends Component {
         rightRender:null
     }
     renderTabBar(props) {
-        if(this.props.rightRender == null) {
+        if(this.props.rightRender == null){
           return null;
-        }else{
-            return React.cloneElement(this.props.rightRender(props), props);
-        }   
-        
+        } else {
+          return React.cloneElement(this.props.rightRender(props), props);
+        }
     }
     render() {
         const { titleName } = this.props
@@ -60,6 +59,10 @@ const styles = StyleSheet.create({
         left: 18,
         top: 42
     },
+    titleStyle : {
+        fontSize: 17,
+        color: '#fff',
+    },
     rightBox:{
         width: 60,
         height: 26,
@@ -68,9 +71,5 @@ const styles = StyleSheet.create({
         right:6,
         // backgroundColor:'#daf'
     },
-    titleStyle : {
-        fontSize: 17,
-        color: '#fff',
-        
-    }
+  
 });

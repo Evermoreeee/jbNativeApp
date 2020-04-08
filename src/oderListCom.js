@@ -200,7 +200,7 @@ class OderListComponent extends React.PureComponent {
         } else {
             const NODATA_ICON = require('./assets/fangdajing.png')
             return (<View style={{ flex: 1, justifyContent: "center", alignItems: "center",marginBottom:30 }}>
-                <Image style={{width:80,height:80}} source={NODATA_ICON}></Image>
+                <Image style={{width:70,height:70}} source={NODATA_ICON}></Image>
                 <Text style={{ color: '#fff', fontSize: 14,marginTop:8 }}>暂无相关订单</Text>
                 </View>)
         }

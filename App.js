@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 
 
-import TabsNav from './src/tabsNav'
+// import TabsNav from './src/tabsNav'
 import AccountDetail from './src/views/AccountDetail'
 const App = React$Node  => {
   return (
