@@ -15,18 +15,17 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-const Tab = createMaterialTopTabNavigator();
-
 
 import HeaderContext from '../HeaderCom';
-const BACK_ICON = require('../assets/fanhui_copy.png')
+import BetListView from './BetListView';
 
+
+const Tab = createMaterialTopTabNavigator();
+const BACK_ICON = require('../assets/fanhui_copy.png')
 //手机屏幕的宽度
 const width = Dimensions.get('window').width;
 const mleft = (width/3 - 52)/2
-const HomeScreen = function(){
-    return (<View style={{flex:1,backgroundColor:'#242428'}}><Text> 123</Text></View>)
-}
+
 class AccountDetail extends Component{
     constructor(props){
         super(props)
@@ -35,9 +34,9 @@ class AccountDetail extends Component{
             showOption:false,
             activeOption:{name:'今日',quickOptions:'Today'},
             TABS_DATA : [
-                { title: '投注盈亏', active: 0 ,em:0},
-                { title: '充值明细', active: 1 ,em:0},
-                { title: '活动礼金', active: 2 ,em:0},
+                { title: '投注盈亏', active: 0 ,em:0,type:'WinOrlose'},
+                { title: '充值明细', active: 1 ,em:0,type:'Recharge'},
+                { title: '活动礼金', active: 2 ,em:0,type:'Events'},
             ],
             QuickData : [
                 {name:'今日',quickOptions:'Today'},
@@ -45,32 +44,49 @@ class AccountDetail extends Component{
                 {name:'30天',quickOptions:'Thirty'},
                 {name:'本月',quickOptions:'ThisMonth'},
             ]
-           
         }
     }
-    //* tabs  
-    tabViewRender(){
-        const _render = this.state.TABS_DATA.map((item,index)=>{
-            return (
-                <View style={styles.textStyle} tabLabel={JSON.stringify(item)}></View>)
-        })
-        return _render ;
-    }
+    // //* tabs  
+    // tabViewRender(){
+    //     const _render = this.state.TABS_DATA.map((item,index)=>{
+    //         return (
+    //             <View style={styles.textStyle} tabLabel={JSON.stringify(item)}></View>)
+    //     })
+    //     return _render ;
+    // }
     //* 下拉时间选择菜单 
     rightRender(){
         const {activeOption} = this.state
         return(<View style={styles.rightContainer}>
-            <Text style={{fontSize:13,color:'#fff'}}>{activeOption.name}</Text>
-            <Image style={styles.backIcon} source={BACK_ICON}></Image>
+            <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>{
+                this.setState({
+                    showOption:!this.state.showOption
+                })
+            }}>
+                <Text style={{fontSize:13,color:'#fff'}}>{activeOption.name}</Text>
+                <Image style={styles.backIcon} source={BACK_ICON}></Image>
+            </TouchableOpacity>
         </View>)
     }
+    renderBetListView(){
+        const tabs = this.state.TABS_DATA.map((item,index)=>{
+            let _Bcomponent = ()=>{
+                return (<BetListView listType = {item.type} activeOption = {this.state.activeOption}></BetListView>)
+            }
+            return (
+                <Tab.Screen key={index} name={item.title} component={ _Bcomponent} />
+            )
+        })
+        return tabs;
+    }
     render(){
-        let Tabs = this.state.TABS_DATA
+        // let Tabs = this.state.TABS_DATA
         const QuickOptions = this.state.QuickData.map((item,index)=>{
             return (
                 <TouchableOpacity onPress={()=>{
                     this.setState({
-                        activeOption:item
+                        activeOption:item,
+                        showOption:false
                     })
                 }}>
                     <Text style={[styles.quickItem, index ==  3?{borderBottomWidth:0,}:null]}>{item.name}</Text>
@@ -104,9 +120,10 @@ class AccountDetail extends Component{
                             style: { backgroundColor: '#2D3237' },
                           }}
                         >
-                        <Tab.Screen name="投注盈亏" component={HomeScreen} />
+                            {this.renderBetListView()}
+                        {/* <Tab.Screen name="投注盈亏" component={} />
                         <Tab.Screen name="充值明细" component={HomeScreen} />
-                        <Tab.Screen name="活动礼金" component={HomeScreen} />
+                        <Tab.Screen name="活动礼金" component={HomeScreen} /> */}
                     </Tab.Navigator>
                 </NavigationContainer>
 

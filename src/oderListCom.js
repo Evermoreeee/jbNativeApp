@@ -20,8 +20,8 @@ import BottomView from './BottomView'
 import { toFixt2 } from './utils/utils'
 
 import PropTypes from 'prop-types';
-// import headers from './utils/fetch'
-
+import headers from './utils/fetch'
+import {Axios} from './utils/axios'
 
 /**
  * 订单列表 
@@ -55,7 +55,7 @@ class OderListComponent extends React.PureComponent {
         this.getOderListData()
     }
     //TODO: 开发本地请求 后面使用native 客户端请求
-    getOderListData(loadMorePageIndex) {
+    async getOderListData(loadMorePageIndex) {
         const _data = {
             status: this.props.statusProps,
             settleDate: this.props.dataProps,
@@ -63,64 +63,55 @@ class OderListComponent extends React.PureComponent {
             pageIndex: loadMorePageIndex > 1 ? loadMorePageIndex : 1
         }
         // console.log('>>>>>>>>>>>>>>'+JSON.stringify(_data))
-        const url = 'https://appplus.rrystv.com/ticket/order/list'
-        fetch(url, {
-            method: 'POST',
-            // headers: headers,
-            body: JSON.stringify(_data)
-        }).then((response) => response.json()).then((res) => {
-            // console.log(res)
-            const resData = res.data
+        const url = '/ticket/order/list'
+        const res = await Axios.post(url,_data)
+        const resData = res.data
 
-            const active = this.props.statusProps
+        const active = this.props.statusProps
 
-            let { extra } = resData
-            let leftNumber = extra.totalBetAmount
-            let rightNumber = extra.totalPossibleTurnover
+        let { extra } = resData
+        let leftNumber = extra.totalBetAmount
+        let rightNumber = extra.totalPossibleTurnover
 
-            if (active == 2) {
-                rightNumber = extra.totalTurnover
-            } else if (active == -1) {
-                rightNumber = extra.totalBetAmount
-            }
+        if (active == 2) {
+            rightNumber = extra.totalTurnover
+        } else if (active == -1) {
+            rightNumber = extra.totalBetAmount
+        }
 
-            resData.rows.forEach((item, index) => {
-                item['key'] = index
-            });
-            //* Rows list 
-            let listData = resData.rows
+        resData.rows.forEach((item, index) => {
+            item['key'] = index
+        });
+        //* Rows list 
+        let listData = resData.rows
 
-            //* more page
-            if (loadMorePageIndex > 1) {
-                listData = [...this.state.oderListData, ...listData]
-            }
-            //* last page
-            let endMorePageList = false
-            if (resData.total == listData.length) {
-                endMorePageList = true
-            }
+        //* more page
+        if (loadMorePageIndex > 1) {
+            listData = [...this.state.oderListData, ...listData]
+        }
+        //* last page
+        let endMorePageList = false
+        if (resData.total == listData.length) {
+            endMorePageList = true
+        }
 
-            this.setState({
-                oderListData: listData,
-                isTotalSize: resData.total,
-                endMorePageList: endMorePageList,
-                isLoading:false,
-                extraData: {
-                    leftNumber: toFixt2(leftNumber),
-                    rightNumber: toFixt2(rightNumber)
-                },
-            })
-            
-            //* 列表为空的时候
-            if (resData.rows.length == 0 && _data.pageIndex == 1) {
-                this.setState({
-                    endRender: true
-                })
-            }
-
-        }).catch(error => {
-            // console.log(error)
+        this.setState({
+            oderListData: listData,
+            isTotalSize: resData.total,
+            endMorePageList: endMorePageList,
+            isLoading:false,
+            extraData: {
+                leftNumber: toFixt2(leftNumber),
+                rightNumber: toFixt2(rightNumber)
+            },
         })
+        //* 列表为空的时候
+        if (resData.rows.length == 0 && _data.pageIndex == 1) {
+            this.setState({
+                endRender: true
+            })
+        }
+        
     }
 
     _renderItem(item) {
@@ -172,29 +163,32 @@ class OderListComponent extends React.PureComponent {
     _listRenderComponent() {
         if (!this.state.endRender) {
             return (
+
+                //! 尝试使用VirtualizedList   windowSize  removeClippedSubviews
+
                 <FlatList
                     data={this.state.oderListData}
-                    keyExtractor={this._keyExtractor}
                     renderItem={({ item }) => this._renderItem(item)}
                     refreshControl = {
                         <RefreshControl
                           title={'加载中...'}
-
                           tintColor={'#13D9C9'}
                           titleColor={'#13D9C9'}//只有ios有效
-            
+                          
                           refreshing={this.state.isLoading}
                           onRefresh={()=>{
                             this.onRefresh();
                           }}
                         />
                       }
+                    // windowSize = {20}
+                    // removeClippedSubviews={true}
                     ListFooterComponent={() => this.genIndicator()}//上拉加载更多视图
                     onEndReached={() => {
                         this.loadMoreData()
                     }}
                     onEndReachedThreshold={0.1}
-                
+                    keyExtractor={(item, index) => index.toString()}
                 />
             )
         } else {

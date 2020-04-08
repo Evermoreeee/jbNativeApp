@@ -18,22 +18,7 @@ const headers = {
     'x-sign':global._gb_k,
     'Authorization':Authorization
 }
-const baseurl = '//appplus.rrystv.com/'
 
-// const Axios =(method, url, data, config = {}) => {
-//       switch(method){
-//           case 'POST':
-//               console.log(headers)
-//               return fetch(`${baseurl}/${url}`,{
-//                   method:'POST',headers,body:JSON.stringify(data)}
-//                   )
-//           case 'GET' :
-//               return fetch(`${baseurl}/${url}`,{
-//                     method:'GET',headers}
-//                     ).then(res => {
-//                         console.log(res)
-//                     })
-//       }
-// }
+
 
 export default headers;
