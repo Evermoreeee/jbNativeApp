@@ -15,7 +15,7 @@ const baseurl = 'https://appplus.rrystv.com'
 // 安卓环境 
 const IsAndroidRequest = Platform.OS === 'android' 
 // 开发环境
-const IsDevTestRequest = false 
+const IsDevTestRequest = true 
 
 //* request tunnle  ios/android
 const request = (method, url, data) => {
@@ -40,12 +40,12 @@ const request = (method, url, data) => {
               })
         });
     }else{
-        return new Promise((resolve, reject) => {
-            NativeModules.NetworkPlugin.findPromises(requestUrl,options).then(res =>{
-                // NetworkPlugin.post(res)
-                resolve(res)
-            })
-        })
+        // return new Promise((resolve, reject) => {
+        //     NativeModules.NetworkPlugin.findPromises(requestUrl,options).then(res =>{
+        //         // NetworkPlugin.post(res)
+        //         resolve(res)
+        //     })
+        // })
     }
     
 };

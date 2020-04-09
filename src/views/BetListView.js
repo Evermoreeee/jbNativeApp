@@ -7,7 +7,9 @@ import {
     Dimensions,
     ActivityIndicator,
     RefreshControl,
-    TouchableOpacity
+    TouchableOpacity,
+    TouchableNativeFeedback,
+    TouchableHighlight
 } from 'react-native';
 import PropTypes from "prop-types";
 import {Axios} from "../utils/axios"
@@ -67,11 +69,11 @@ class BetListView extends React.PureComponent{
             return(<Recharge cardOption = {item} isLastCard={isLastCard} listType={listType}></Recharge>)
         }else if(listType == 'WinOrlose'){
             return(
-                <TouchableOpacity onPress={()=>{
+                <TouchableHighlight onPress={()=>{
                     navigation.navigate('Details',{ticketId:item.ticketID})
                 }}>
                 <BettingOver cardOption = {item} isLastCard={isLastCard} listType={listType} ></BettingOver>
-                </TouchableOpacity>
+                </TouchableHighlight>
             )
         }else{
             return(<BettingOver cardOption = {item} isLastCard={isLastCard} listType={listType} ></BettingOver>)
