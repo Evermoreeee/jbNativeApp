@@ -5,6 +5,7 @@ import {
   StyleSheet,
   View,
   Text,
+  Dimensions,
   ScrollView
 } from 'react-native';
 import ScrollableTabView,{DefaultTabBar} from 'react-native-scrollable-tab-view';
@@ -15,6 +16,9 @@ import headers from './utils/fetch'
 import HeaderContext from './HeaderCom';
 import EarlyMatch from './earlyMatch'
 import OderListComponent from './oderListCom'
+//手机屏幕的宽度
+const width = Dimensions.get('window').width;
+const mleft = (width/4 - 28)/2
 
 class TabsNav extends Component{
     constructor(props){
@@ -95,7 +99,7 @@ const styles = StyleSheet.create({
         height:3,
         borderRadius:15,
         backgroundColor:'#13D9C9',
-        marginLeft:36
+        marginLeft:mleft
     },
     textStyle:{
         flex:1,

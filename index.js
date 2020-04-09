@@ -6,7 +6,7 @@ import {AppRegistry ,UIManager} from 'react-native';
 
 
 import App from './App';
-// import AccountDetail from './src/views/AccountDetail'
+import AccApp from './src/views/AppNav'
 
 
 import {name as appName} from './app.json';
@@ -19,7 +19,7 @@ import {name as appName} from './app.json';
 
 UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
 
-AppRegistry.registerComponent(appName, () => App);
-// AppRegistry.registerComponent('AccountDetail', () => AccountDetail);
+AppRegistry.registerComponent(appName, () => AccApp);
+AppRegistry.registerComponent('AccountDetail', () => AccApp);
 
 

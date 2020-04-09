@@ -162,7 +162,6 @@ export default StrandCard;
 const styles = StyleSheet.create({
     CardContainer: {
         marginTop: 1,
-        flexDirection: 'column'
     },
     shiuyinBg:{
         position:'absolute',

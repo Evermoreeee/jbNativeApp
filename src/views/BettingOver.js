@@ -11,30 +11,41 @@ import {
 import PropTypes from "prop-types";
 const BACK_ICON = require('../assets/you.png')
 const BG_JB = require('../assets/ic_shuiyin_fly.png')
-
+import {toFixt2} from '../utils/utils'
 class BettingOver extends Component{
     constructor(props){
         super(props)
     }
     static propTypes = {
         cardOption:PropTypes.object.isRequired,
-        isLastCard:PropTypes.bool
+        isLastCard:PropTypes.bool,
+        listType:PropTypes.string.isRequired,
+
     }
     static defaultProps = {
         isLastCard:false
     }
+    rightBackButton(isBeting){
+        if(isBeting){
+            return (
+                <Image style={styles.righgtGo} source={BACK_ICON}></Image>
+            )
+        }else{
+            return (<View style={styles.righgtGo}></View>)
+        }
+    }
     render(){
-        const { cardOption ,isLastCard} = this.props
-
+        const { cardOption ,isLastCard ,listType } = this.props
         const dataArray = cardOption.title.split(cardOption.matchScore)
-        
-      
+        const isBeting = listType=='WinOrlose'?true:false
         return (
+            
             <View style={styles.container}> 
                 <View style={styles.leftLineCom}>
                     <View style={styles.borderYuan}></View>
                     <View style={[styles.borderLine,isLastCard?{width:0}:null]}></View>
                 </View>
+                
                 <View style={styles.cardCom}>
                     <View style={styles.cardText}>
                         <View style={styles.leftTextRow}>
@@ -43,18 +54,19 @@ class BettingOver extends Component{
                                 <Text style={{fontSize: 13,color:'#13D9C9'}}>{cardOption.matchScore}</Text>
                                 <Text numberOfLines={1} style={{fontSize: 13,color:'#fff',flex:1,marginRight:3}}>{dataArray[1]}</Text>
                             </View>
-                            <Text style={[{fontSize: 13,color:'#F1935F'},cardOption.amount<0?{color:'#fff'}:null]}>{cardOption.amount}</Text>
+                            <Text style={[{fontSize: 13,color:'#F1935F'},cardOption.amount<0?{color:'#fff'}:null]}>{isBeting?'':'+'}{toFixt2(cardOption.amount)}</Text>
                         </View>
                         <View style={styles.leftTextRow}>
                             { this.renderDesc(cardOption) }
                             <Text style={{fontSize: 13,color:'#8D8E91',marginRight:5}}>{cardOption.confirmTime}</Text>
-                            <Text style={{fontSize: 13,color:'#8D8E91'}}>盈亏</Text>
+                            <Text style={{fontSize: 13,color:'#8D8E91'}}>{isBeting?'盈亏':''}</Text>
                         </View>
                     </View>
-                    <Image style={styles.righgtGo} source={BACK_ICON}></Image>
+                    {this.rightBackButton(isBeting)}
                     <ImageBackground style={styles.fqbjStyle} source={BG_JB}></ImageBackground>
                 </View>
             </View>
+            
         )
     }
     renderDesc(cardOption){

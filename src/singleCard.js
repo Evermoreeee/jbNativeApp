@@ -20,7 +20,7 @@ const BG_JB = require('./assets/shuiyin_a.png')
 const YING_ICON = require('./assets/ic_ying.png')
 const SHU_ICON = require('./assets/ic_shu.png')
 const TIE_ICON = require('./assets/img_zoudi.png')
-
+const nullImage = 'https://static.visa0.com/695253.png'
 class SingleCard extends React.PureComponent {
     constructor(props) {
         super(props)
@@ -31,7 +31,6 @@ class SingleCard extends React.PureComponent {
     static propTypes = {
         itemData: PropTypes.object.isRequired,
     }
-
     //* 点击card 底部的折叠按钮
     _handleCardBottom() {
         LayoutAnimation.configureNext(AnimationConfig);
@@ -126,7 +125,7 @@ class SingleCard extends React.PureComponent {
                     <View style={[styles.pdtop, { paddingHorizontal: 30, paddingTop: 12 }]}>
                         <View style={styles.scoreCom}>
                             <View style={styles.scoreName}>
-                                <Image style={styles.teamIcon} source={{ uri: DetailData.team1Flag?DetailData.team1Flag:null }}></Image>
+                                <Image style={styles.teamIcon} source={{ uri: DetailData.team1Flag?DetailData.team1Flag:nullImage }}></Image>
                                 <Text numberOfLines={1} style={styles.teamZh}>{DetailData.team1Zh} </Text>
                             </View>
                             <Text style={styles.scoreNumber}>{matchScoreArray[0]}</Text>
@@ -135,7 +134,7 @@ class SingleCard extends React.PureComponent {
                         <View style={styles.scoreCom}>
                             <Text style={styles.scoreNumber}>{matchScoreArray[1]}</Text>
                             <View style={styles.scoreName}>
-                                <Image style={styles.teamIcon} source={{ uri: DetailData.team2Flag?DetailData.team2Flag:null }}></Image>
+                                <Image style={styles.teamIcon} source={{ uri: DetailData.team2Flag?DetailData.team2Flag:nullImage }}></Image>
                                 <Text numberOfLines={1} style={styles.teamZh}>{DetailData.team2Zh}</Text>
                             </View>
                         </View>
@@ -184,8 +183,6 @@ const styles = StyleSheet.create({
     CardContainer: {
         marginTop: 1,
         // minHeight: 201,
-        flexDirection: 'column',
-        
     },
     shiuyinBg:{
         position:'absolute',

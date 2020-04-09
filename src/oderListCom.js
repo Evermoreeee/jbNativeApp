@@ -8,6 +8,7 @@ import {
     Image,
     ScrollView,
     RefreshControl,
+    VirtualizedList,
     ActivityIndicator,
     ListFooterComponent,
 } from 'react-native';
@@ -33,7 +34,6 @@ class OderListComponent extends React.PureComponent {
         this.state = {
             pageIndex: 1,
             oderListData: [],
-            endRender: false, //列表为空
             isTotalSize: 0, //总条数
             endMorePageList: false, //最后一页
             isLoading: false,
@@ -111,10 +111,9 @@ class OderListComponent extends React.PureComponent {
                 endRender: true
             })
         }
-        
     }
 
-    _renderItem(item) {
+    _renderItem =(item)=> {
         if (item.parlayRule == 11) {
             return (<SingleCard itemData={item} statusProps={this.props.statusProps} />)
         } else {
@@ -138,7 +137,6 @@ class OderListComponent extends React.PureComponent {
             pageIndex: pageIndex
         })
         this.getOderListData(pageIndex)
-
     }
     //* 上啦加载更多render 
     genIndicator() {
@@ -160,13 +158,23 @@ class OderListComponent extends React.PureComponent {
         }
         
     }
+    _getItemCount (data)  {
+        return data ? Math.ceil(data.length / this.props.numColumns) : 0;
+      };
     _listRenderComponent() {
         if (!this.state.endRender) {
             return (
 
                 //! 尝试使用VirtualizedList   windowSize  removeClippedSubviews
+                // <VirtualizedList
+                //     data={this.state.oderListData}
+                //     renderItem={({ item }) => this._renderItem(item)}
+                //     getItemCount={}
+                // >
 
+                // </VirtualizedList>
                 <FlatList
+                    style={{flex:1}}
                     data={this.state.oderListData}
                     renderItem={({ item }) => this._renderItem(item)}
                     refreshControl = {
@@ -174,15 +182,15 @@ class OderListComponent extends React.PureComponent {
                           title={'加载中...'}
                           tintColor={'#13D9C9'}
                           titleColor={'#13D9C9'}//只有ios有效
-                          
                           refreshing={this.state.isLoading}
                           onRefresh={()=>{
                             this.onRefresh();
                           }}
                         />
-                      }
-                    // windowSize = {20}
-                    // removeClippedSubviews={true}
+                    }
+                      
+                    windowSize={70}
+                    removeClippedSubviews={true}
                     ListFooterComponent={() => this.genIndicator()}//上拉加载更多视图
                     onEndReached={() => {
                         this.loadMoreData()
@@ -199,7 +207,7 @@ class OderListComponent extends React.PureComponent {
                 </View>)
         }
     }
-    _keyExtractor = (item, index) => item.name;
+   
     render() {
         return (
             <View style={{ flex: 1 }}>
@@ -211,78 +219,6 @@ class OderListComponent extends React.PureComponent {
 }
 
 
-class Header extends Component {
-    // Header component **MUST** expose a `setProgress` method,
-    // which is called when user is pulling container down
-    // pullDistance is user's pull distance
-    // percent is current pull ratio range of [0, 1]
-    setProgress(pullDistance, percent) {
-        this.setState({
-            pullDistance,
-            percent,
-        });
-    }
-    render() {
-        return (
-            <View><Text>123</Text></View>
-        )
-    }
-}
-
-
-class Header1 extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            pullDistance: props.pullDistance,
-            percent: props.percent,
-        };
-    }
-
-    setProgress(pullDistance, percent) {
-        this.setState({
-            pullDistance,
-            percent,
-        });
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            pullDistance: nextProps.pullDistance,
-            percent: nextProps.percent,
-        });
-    }
-
-    render() {
-        const { percentAnimatedValue, percent, refreshing } = this.props;
-        const { percent: statePercent, pullDistance } = this.state;
-        // console.log('header props 2222 ', statePercent, percent, refreshing); 
-        let text = 'pull to refresh ';
-        if (statePercent >= 1) {
-            if (refreshing) {
-                text = 'refreshing...';
-            } else {
-                text = 'release to refresh  ';
-            }
-        }
-
-        return (
-            <Animated.View style={[headerStyle.con, { opacity: percentAnimatedValue }]}>
-                <Text style={headerStyle.title}>{text}</Text>
-            </Animated.View>
-        );
-    }
-}
-const headerStyle = {
-    con: {
-        height: 100,
-        justifyContent: 'center',
-        backgroundColor: 'yellow',
-    },
-    title: {
-        fontSize: 22,
-    },
-};
 
 export default OderListComponent;
 

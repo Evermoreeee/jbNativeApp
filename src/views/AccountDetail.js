@@ -9,19 +9,21 @@ import {
     TouchableOpacity,
     ImageBackground,
     Dimensions,
+    StatusBar,
+    SafeAreaView,
     LayoutAnimation
 } from 'react-native';
 // import ScrollableTabView,{DefaultTabBar} from 'react-native-scrollable-tab-view';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import RenderNewHeader from './renderHeader'
 
-
-import HeaderContext from '../HeaderCom';
+// import HeaderContext from '../HeaderCom';
 import BetListView from './BetListView';
 
 
 const Tab = createMaterialTopTabNavigator();
-const BACK_ICON = require('../assets/fanhui_copy.png')
+
 //手机屏幕的宽度
 const width = Dimensions.get('window').width;
 const mleft = (width/3 - 52)/2
@@ -31,47 +33,23 @@ class AccountDetail extends Component{
         super(props)
         this.state = {
             rightName:null,
-            showOption:false,
             activeOption:{name:'今日',quickOptions:'Today'},
-            TABS_DATA : [
-                { title: '投注盈亏', active: 0 ,em:0,type:'WinOrlose'},
-                { title: '充值明细', active: 1 ,em:0,type:'Recharge'},
-                { title: '活动礼金', active: 2 ,em:0,type:'Events'},
-            ],
-            QuickData : [
-                {name:'今日',quickOptions:'Today'},
-                {name:'7天',quickOptions:'Seven'},
-                {name:'30天',quickOptions:'Thirty'},
-                {name:'本月',quickOptions:'ThisMonth'},
-            ]
         }
+        this.TABS_DATA = [
+            { title: '投注盈亏', active: 0 ,em:0,type:'WinOrlose'},
+            { title: '充值明细', active: 1 ,em:0,type:'Recharge'},
+            { title: '活动礼金', active: 2 ,em:0,type:'Events'},
+        ]
     }
-    // //* tabs  
-    // tabViewRender(){
-    //     const _render = this.state.TABS_DATA.map((item,index)=>{
-    //         return (
-    //             <View style={styles.textStyle} tabLabel={JSON.stringify(item)}></View>)
-    //     })
-    //     return _render ;
-    // }
-    //* 下拉时间选择菜单 
-    rightRender(){
-        const {activeOption} = this.state
-        return(<View style={styles.rightContainer}>
-            <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>{
-                this.setState({
-                    showOption:!this.state.showOption
-                })
-            }}>
-                <Text style={{fontSize:13,color:'#fff'}}>{activeOption.name}</Text>
-                <Image style={styles.backIcon} source={BACK_ICON}></Image>
-            </TouchableOpacity>
-        </View>)
+    handleCheckType = typeObj => {
+        this.setState({
+            activeOption:typeObj
+        })
     }
     renderBetListView(){
-        const tabs = this.state.TABS_DATA.map((item,index)=>{
-            let _Bcomponent = ()=>{
-                return (<BetListView listType = {item.type} activeOption = {this.state.activeOption}></BetListView>)
+        const tabs = this.TABS_DATA.map((item,index)=>{
+            let _Bcomponent =()=>{
+                return (<BetListView listType = {item.type} activeOption = {this.state.activeOption} navigation={this.props.navigation}></BetListView>)
             }
             return (
                 <Tab.Screen key={index} name={item.title} component={ _Bcomponent} />
@@ -80,30 +58,10 @@ class AccountDetail extends Component{
         return tabs;
     }
     render(){
-        // let Tabs = this.state.TABS_DATA
-        const QuickOptions = this.state.QuickData.map((item,index)=>{
-            return (
-                <TouchableOpacity onPress={()=>{
-                    this.setState({
-                        activeOption:item,
-                        showOption:false
-                    })
-                }}>
-                    <Text style={[styles.quickItem, index ==  3?{borderBottomWidth:0,}:null]}>{item.name}</Text>
-                </TouchableOpacity>
-            )
-        })
-
-        const _renderQuickOptions = this.state.showOption?QuickOptions:null
+        // console.log('render>>>>>>>>>>>>>')
         return(
             <View style={styles.container}>
-                <HeaderContext titleName='账目明细' rightRender = {this.rightRender.bind(this)}></HeaderContext>
-                {/* 下拉菜单 */}
-
-                <View style={styles.listOption}>
-                    {_renderQuickOptions}
-                </View>
-                <NavigationContainer>
+                <RenderNewHeader callBackFunc = {this.handleCheckType }></RenderNewHeader>
                     <Tab.Navigator
                         tabBarOptions={{
                             activeTintColor:'#13D9C9',
@@ -121,30 +79,7 @@ class AccountDetail extends Component{
                           }}
                         >
                             {this.renderBetListView()}
-                        {/* <Tab.Screen name="投注盈亏" component={} />
-                        <Tab.Screen name="充值明细" component={HomeScreen} />
-                        <Tab.Screen name="活动礼金" component={HomeScreen} /> */}
                     </Tab.Navigator>
-                </NavigationContainer>
-
-                {/* <ScrollableTabView
-                    style={styles.container}
-                    tabBarUnderlineStyle={styles.lineStyle}
-                    renderTabBar={() => <DefaultTabBar />}
-                    tabBarActiveTextColor='#13D9C9'
-                >
-                    <View style={styles.textStyle} tabLabel={JSON.stringify(Tabs[0])}>
-                        <Text style={{color:'#fff',textAlign:'center'}}>投注盈亏</Text>
-                    </View>
-                    <View style={styles.textStyle} tabLabel={JSON.stringify(Tabs[1])}>
-                    <Text style={{color:'#fff',textAlign:'center'}}>充值明细</Text>
-
-                    </View>
-                    <View style={styles.textStyle} tabLabel={JSON.stringify(Tabs[2])}>
-                    <Text style={{color:'#fff',textAlign:'center'}}>活动礼金</Text>
-                    </View>
-                </ScrollableTabView> */}
-                 
             </View>
         )
     }

@@ -18,10 +18,12 @@ class HeaderContext extends Component {
     }
     static propTypes = {
         titleName: PropTypes.string.isRequired,
-        rightRender:PropTypes.any
+        rightRender:PropTypes.any,
+        navigation:PropTypes.object
     }
     static defaultProps = {
-        rightRender:null
+        rightRender:null,
+        navigation:null
     }
     renderTabBar(props) {
         if(this.props.rightRender == null){
@@ -30,13 +32,26 @@ class HeaderContext extends Component {
           return React.cloneElement(this.props.rightRender(props), props);
         }
     }
+    hendleBack(props){
+        const { navigation } = this.props
+        // navigation.goBack()
+        // console.log(this.props)
+        if(navigation){
+            navigation.goBack()
+        }
+    }
     render() {
         const { titleName } = this.props
         return (
             <LinearGradient colors={['#4B525D', '#35383D']} style={styles.container}>
-                <Image style={styles.backIcon} source={BACK_ICON}></Image>
+                    <TouchableOpacity onPress={()=>{this.hendleBack()}}>
+                        <View style={styles.navBox}>
+                            <Image style={styles.backIcon} source={BACK_ICON}></Image>
+                        </View>
+                    </TouchableOpacity>
                 <Text style={styles.titleStyle}>{titleName}</Text>
-                <View style={styles.rightBox}>
+               
+                <View style={styles.navBox}>
                     {this.renderTabBar()}
                 </View>
             </LinearGradient>
@@ -49,27 +64,29 @@ const styles = StyleSheet.create({
     container: {
         height: 68,
         paddingTop: 30,
+        flexDirection:'row',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    navBox:{
+        width:80,
+       justifyContent:'center'
     },
     backIcon: {
         width: 8,
         height: 15,
-        position: 'absolute',
-        left: 18,
-        top: 42
+        marginLeft:15
+
     },
     titleStyle : {
+        flex:1,
         fontSize: 17,
         color: '#fff',
+        textAlign:'center'
     },
     rightBox:{
         width: 60,
         height: 26,
-        position: 'absolute',
-        top:35,
-        right:6,
-        // backgroundColor:'#daf'
     },
   
 });
