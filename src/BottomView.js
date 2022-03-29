@@ -14,6 +14,8 @@ export default class BottomView extends Component{
     }
     render(){
         let leftText = '总投注额',rightText = '总可盈利'
+
+        console.log('-----')
         const { statusProps} = this.props
             switch (statusProps) {
                 case 2:
